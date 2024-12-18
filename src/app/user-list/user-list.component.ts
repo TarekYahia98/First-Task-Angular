@@ -16,7 +16,7 @@ import { FormsModule } from '@angular/forms';
 export class UserListComponent implements OnInit,OnDestroy {
   users: User[] = [];
   private userSubscription: Subscription | null = null;
-  Subscription = new Subscription();
+  subscription = new Subscription();
   private navigationSubscription: Subscription | null = null;
   filteredUsers: User[] = [];
   searchTerm: string = '';
@@ -32,24 +32,8 @@ export class UserListComponent implements OnInit,OnDestroy {
         this.fetchUsers();
       }
     });
-  
-  const sub2 =  this.navigationSubscription = this.router.events.subscribe(event => {
-      if (event instanceof NavigationEnd && event.url === '/users') {
-        this.fetchUsers();
-      }
-    });
-  
-  const sub3 =  this.navigationSubscription = this.router.events.subscribe(event => {
-      if (event instanceof NavigationEnd && event.url === '/users') {
-        this.fetchUsers();
-      }
-    });
 
-
-
-    this.Subscription.add(sub1);
-    this.Subscription.add(sub2);
-    this.Subscription.add(sub3);
+    this.subscription.add(sub1);
   }
 
   fetchUsers() {
@@ -65,15 +49,14 @@ export class UserListComponent implements OnInit,OnDestroy {
   }
 
   ngOnDestroy(): void {
-    if (this.userSubscription) {
-      this.userSubscription.unsubscribe();
-    }
-    if (this.navigationSubscription) {
-      this.navigationSubscription.unsubscribe();
-    }
-
-
-    this.Subscription.unsubscribe();
+    // if (this.userSubscription) {
+    //   this.userSubscription.unsubscribe();
+    // }
+    // if (this.navigationSubscription) {
+    //   this.navigationSubscription.unsubscribe();
+    // }
+    
+    this.subscription.unsubscribe();
   }
 
   filterUsers() {
