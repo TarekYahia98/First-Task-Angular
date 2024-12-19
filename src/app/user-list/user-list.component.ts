@@ -1,7 +1,7 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { NavigationEnd, Router } from '@angular/router';
 import { User } from '../models/user.model';
-import { CommonModule } from '@angular/common';
+import { CommonModule, Location } from '@angular/common';
 import { UserService } from '../../services/user.service';
 import { Subscription } from 'rxjs';
 import { FormsModule } from '@angular/forms';
@@ -15,21 +15,25 @@ import { FormsModule } from '@angular/forms';
 })
 export class UserListComponent implements OnInit,OnDestroy {
   users: User[] = [];
+  localStorageUsers: User[] = [];
   private userSubscription: Subscription | null = null;
   subscription = new Subscription();
   private navigationSubscription: Subscription | null = null;
   filteredUsers: User[] = [];
+  filteredLocalStorageUsers: User[] = [];
   searchTerm: string = '';
 
-  constructor(private userService: UserService, private router: Router) {}
+  constructor(private userService: UserService, private router: Router, private location: Location) {}
 
 
   ngOnInit(): void {
     this.fetchUsers();
+    this.fetchLocalStorageUsers();
 
   const sub1 =  this.navigationSubscription = this.router.events.subscribe(event => {
       if (event instanceof NavigationEnd && event.url === '/users') {
         this.fetchUsers();
+        this.fetchLocalStorageUsers();
       }
     });
 
@@ -43,9 +47,41 @@ export class UserListComponent implements OnInit,OnDestroy {
     });
   }
 
+  fetchLocalStorageUsers() {
+    const storedUsers = JSON.parse(localStorage.getItem('users') || '[]');
+    this.localStorageUsers = storedUsers;
+    this.filteredLocalStorageUsers = [...this.localStorageUsers];
+  }
 
   viewUserDetails(userId: number) {
     this.router.navigate(['/user', userId]);
+  }
+
+  navigateToAddUser() {
+    this.location.go('add-user');
+    window.location.reload();
+  }
+  
+  filterUsers() {
+    if (this.searchTerm) {
+      this.filteredUsers = this.users.filter(user => 
+        user.name.toLowerCase().includes(this.searchTerm.toLowerCase()) ||
+        user.email.toLowerCase().includes(this.searchTerm.toLowerCase())
+      );
+    } else {
+      this.filteredUsers = [...this.users];
+    }
+  }
+
+  filterLocalStorageUsers() {
+    if (this.searchTerm) {
+      this.filteredLocalStorageUsers = this.localStorageUsers.filter(user =>
+        user.name.toLowerCase().includes(this.searchTerm.toLowerCase()) ||
+        user.email.toLowerCase().includes(this.searchTerm.toLowerCase())
+      );
+    } else {
+      this.filteredLocalStorageUsers = [...this.localStorageUsers];
+    }
   }
 
   ngOnDestroy(): void {
@@ -57,16 +93,5 @@ export class UserListComponent implements OnInit,OnDestroy {
     // }
     
     this.subscription.unsubscribe();
-  }
-
-  filterUsers() {
-    if (this.searchTerm) {
-      this.filteredUsers = this.users.filter(user => 
-        user.name.toLowerCase().includes(this.searchTerm.toLowerCase()) ||
-        user.email.toLowerCase().includes(this.searchTerm.toLowerCase())
-      );
-    } else {
-      this.filteredUsers = [...this.users];
-    }
   }
 }

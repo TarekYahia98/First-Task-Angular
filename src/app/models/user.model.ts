@@ -26,5 +26,7 @@ export interface Geo {
     phone: string;
     website: string;
     company: Company;
+    age: number | null;
+    salary: number | null;
   }
   

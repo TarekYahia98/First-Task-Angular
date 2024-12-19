@@ -8,6 +8,7 @@
   />
 </div>
 
+<h2>USERS FROM BACKEND API</h2>
 <table class="table table-striped">
   <thead>
     <tr>
@@ -29,4 +30,31 @@
       </td>
     </tr>
   </tbody>
+
+  <div class="add-user-button-container">
+    <button class="btn btn-success" (click)="navigateToAddUser()">Add User</button>
+  </div>
+  
+  <h2>USERS FROM LOCAL STORAGE</h2>
+<table class="table table-striped">
+  <thead>
+    <tr>
+      <th>Name</th>
+      <th>Email</th>
+      <th>Age</th>
+      <th>Salary</th>
+      <th>Address</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr *ngFor="let user of filteredLocalStorageUsers">
+      <td>{{ user.name }}</td>
+      <td>{{ user.email }}</td>
+      <td>{{ user.age }}</td>
+      <td>{{ user.salary }}</td>
+      <td>{{ user.address }}</td>
+
+    </tr>
+  </tbody>
 </table>
+
