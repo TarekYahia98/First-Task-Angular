@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, inject } from '@angular/core';
 import { Router } from '@angular/router';
 import { CommonModule, Location } from '@angular/common';
 import { FormsModule } from '@angular/forms';
@@ -20,6 +20,9 @@ export class AddUserComponent {
   };
 
   constructor(private router: Router, private location: Location) {}
+
+  // router = inject(Router);
+  // location = inject(Location);
 
   saveUser() {
     const users = JSON.parse(localStorage.getItem('users') || '[]');

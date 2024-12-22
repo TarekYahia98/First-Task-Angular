@@ -1,4 +1,4 @@
-import { Component, OnDestroy, OnInit } from '@angular/core';
+import { Component, inject, OnDestroy, OnInit } from '@angular/core';
 import { NavigationEnd, Router } from '@angular/router';
 import { User } from '../models/user.model';
 import { CommonModule, Location } from '@angular/common';
@@ -25,6 +25,9 @@ export class UserListComponent implements OnInit,OnDestroy {
 
   constructor(private userService: UserService, private router: Router, private location: Location) {}
 
+  // userService = inject(UserService);
+  // router = inject(Router);
+  // location = inject(Location);
 
   ngOnInit(): void {
     this.fetchUsers();

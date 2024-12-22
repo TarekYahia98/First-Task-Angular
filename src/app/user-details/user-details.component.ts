@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, inject, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { User } from '../models/user.model';
 import { CommonModule } from '@angular/common';
@@ -21,6 +21,11 @@ export class UserDetailsComponent implements OnInit {
     private router: Router,
     private location: Location
   ) {}
+
+// userService = inject(UserService);
+// route = inject(ActivatedRoute);
+// router = inject(Router);
+// location = inject(Location);
 
   ngOnInit(): void {
     const userId = Number(this.route.snapshot.paramMap.get('id'));
