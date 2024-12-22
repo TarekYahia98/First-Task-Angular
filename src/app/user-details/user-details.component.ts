@@ -15,17 +15,17 @@ import { Location } from '@angular/common';
 export class UserDetailsComponent implements OnInit {
   user: User | null = null;
 
-  constructor(
-    private userService: UserService,
-    private route: ActivatedRoute,
-    private router: Router,
-    private location: Location
-  ) {}
+  // constructor(
+  //   private userService: UserService,
+  //   private route: ActivatedRoute,
+  //   private router: Router,
+  //   private location: Location
+  // ) {}
 
-// userService = inject(UserService);
-// route = inject(ActivatedRoute);
-// router = inject(Router);
-// location = inject(Location);
+userService = inject(UserService);
+route = inject(ActivatedRoute);
+router = inject(Router);
+location = inject(Location);
 
   ngOnInit(): void {
     const userId = Number(this.route.snapshot.paramMap.get('id'));

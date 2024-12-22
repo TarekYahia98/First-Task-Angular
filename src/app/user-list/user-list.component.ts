@@ -1,15 +1,21 @@
-import { Component, inject, OnDestroy, OnInit } from '@angular/core';
+import { Component, inject, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { NavigationEnd, Router } from '@angular/router';
 import { User } from '../models/user.model';
 import { CommonModule, Location } from '@angular/common';
 import { UserService } from '../../services/user.service';
 import { Subscription } from 'rxjs';
 import { FormsModule } from '@angular/forms';
+import {MatPaginator, MatPaginatorModule} from '@angular/material/paginator';
+import {MatTableModule} from '@angular/material/table';
+import { MatSortModule } from '@angular/material/sort';
+import { MatInputModule } from '@angular/material/input';
+import { MatTableDataSource } from '@angular/material/table';
+
 
 @Component({
   selector: 'app-user-list',
   standalone: true,
-  imports: [CommonModule,FormsModule],
+  imports: [CommonModule,FormsModule, MatPaginator, MatPaginatorModule, MatTableModule, MatSortModule, MatInputModule],
   templateUrl: './user-list.component.html',
   styleUrls: ['./user-list.component.css']
 })
@@ -21,14 +27,16 @@ export class UserListComponent implements OnInit,OnDestroy {
   private navigationSubscription: Subscription | null = null;
   filteredUsers: User[] = [];
   filteredLocalStorageUsers: User[] = [];
+  dataSource = new MatTableDataSource<User>([]);
   searchTerm: string = '';
 
-  constructor(private userService: UserService, private router: Router, private location: Location) {}
+  // constructor(private userService: UserService, private router: Router, private location: Location) {}
 
-  // userService = inject(UserService);
-  // router = inject(Router);
-  // location = inject(Location);
+  userService = inject(UserService);
+  router = inject(Router);
+  location = inject(Location);
 
+  @ViewChild(MatPaginator) paginator: MatPaginator | null = null;
   ngOnInit(): void {
     this.fetchUsers();
     this.fetchLocalStorageUsers();
@@ -44,10 +52,21 @@ export class UserListComponent implements OnInit,OnDestroy {
   }
 
   fetchUsers() {
-    this.userSubscription = this.userService.getUsers().subscribe(data => {
+    const userSub = this.userService.getUsers().subscribe((data) => {
       this.users = data;
-      this.filteredUsers = [...this.users];
+      this.dataSource = new MatTableDataSource(this.users);
+      if (this.paginator) {
+        this.dataSource.paginator = this.paginator;
+      }
     });
+    this.subscription.add(userSub);
+  }
+
+  filterUsers() {
+    this.dataSource.filter = this.searchTerm.trim().toLowerCase();
+    if (this.paginator) {
+      this.paginator.firstPage();
+    }
   }
 
   fetchLocalStorageUsers() {
@@ -65,16 +84,16 @@ export class UserListComponent implements OnInit,OnDestroy {
     window.location.reload();
   }
   
-  filterUsers() {
-    if (this.searchTerm) {
-      this.filteredUsers = this.users.filter(user => 
-        user.name.toLowerCase().includes(this.searchTerm.toLowerCase()) ||
-        user.email.toLowerCase().includes(this.searchTerm.toLowerCase())
-      );
-    } else {
-      this.filteredUsers = [...this.users];
-    }
-  }
+  // filterUsers() {
+  //   if (this.searchTerm) {
+  //     this.filteredUsers = this.users.filter(user => 
+  //       user.name.toLowerCase().includes(this.searchTerm.toLowerCase()) ||
+  //       user.email.toLowerCase().includes(this.searchTerm.toLowerCase())
+  //     );
+  //   } else {
+  //     this.filteredUsers = [...this.users];
+  //   }
+  // }
 
   filterLocalStorageUsers() {
     if (this.searchTerm) {
@@ -84,6 +103,13 @@ export class UserListComponent implements OnInit,OnDestroy {
       );
     } else {
       this.filteredLocalStorageUsers = [...this.localStorageUsers];
+    }
+  }
+
+  ngAfterViewInit() {
+    if (this.paginator) {
+      this.dataSource.paginator = this.paginator;
+      this.paginator._intl.itemsPerPageLabel = 'Users per page';
     }
   }
 

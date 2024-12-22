@@ -19,10 +19,10 @@ export class AddUserComponent {
     salary: null
   };
 
-  constructor(private router: Router, private location: Location) {}
+  // constructor(private router: Router, private location: Location) {}
 
-  // router = inject(Router);
-  // location = inject(Location);
+  router = inject(Router);
+  location = inject(Location);
 
   saveUser() {
     const users = JSON.parse(localStorage.getItem('users') || '[]');
