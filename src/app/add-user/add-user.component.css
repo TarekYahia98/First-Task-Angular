@@ -36,3 +36,24 @@
     background-color: #0056b3;
   }
   
+  .popup {
+    position: fixed;
+    top: 20%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    padding: 15px 30px;
+    font-size: 18px;
+    border-radius: 8px;
+    text-align: center;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
+  }
+  
+  .popup.success {
+    background-color: #28a745;
+    color: white;
+  }
+  
+  .popup.error {
+    background-color: #dc3545;
+    color: white;
+  }
