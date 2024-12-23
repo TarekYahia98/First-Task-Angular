@@ -1,4 +1,4 @@
-h1 {
+h1, p {
     font-size: 24px;
     color: #2196f3;
     font-weight: bold;
@@ -25,6 +25,11 @@ h1 {
     margin: 0;
   }
   
+  .icon {
+    color: #2196f3;
+    margin-right: 10px;
+  }
+  
   .main {
     display: flex;
     flex-direction: column;
@@ -34,7 +39,7 @@ h1 {
     text-align: center;
   }
   
-  .icon {
-    color: #2196f3;
-    margin-right: 10px;
+  .contact-item {
+    margin: 10px 0;
   }
+  
