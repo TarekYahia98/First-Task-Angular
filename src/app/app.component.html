@@ -1,5 +1,5 @@
 <!-- Header Section -->
-<header>
+<header [@fadeIn]>
   <nav>
     <ul>
       <li>
@@ -24,14 +24,10 @@
   </nav>
 </header>
 
-
-
-
-<mat-toolbar color="primary">
+<mat-toolbar color="primary" [@slideIn]>
   <img src="https://icon-library.com/images/guest-icon-png/guest-icon-png-14.jpg" alt="App Logo" class="logo" />
   <span>User Management App</span>
 </mat-toolbar>
-
 
 <router-outlet></router-outlet>
 
@@ -48,14 +44,10 @@
       </svg>
 
       <app-about />
-
       <app-contact />
-
     </div>
-    <!-- <div class="right-side">
-      <h1>Welcome to Our User Management Angular App</h1>
-    </div> -->
   </div>
 </main>
+
 
 

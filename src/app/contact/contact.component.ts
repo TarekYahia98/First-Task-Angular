@@ -14,7 +14,7 @@ import { trigger, transition, style, animate } from '@angular/animations';
     trigger('zoomIn', [
       transition(':enter', [
         style({ opacity: 0, transform: 'scale(0.8)' }),  
-        animate('1s ease-out', style({ opacity: 1, transform: 'scale(1)' }))
+        animate('5s ease-out', style({ opacity: 1, transform: 'scale(1)' }))
       ])
     ])
   ]
