@@ -1,0 +1,40 @@
+h1 {
+    font-size: 24px;
+    color: #2196f3;
+    font-weight: bold;
+    text-align: center;
+  }
+  
+  p, ul {
+    font-size: 16px;
+    font-weight: bold;
+    text-align: center;
+  }
+  
+  ul {
+    list-style-type: none;
+    padding: 0;
+  }
+  
+  li {
+    margin: 10px 0;
+  }
+  
+  body, html {
+    height: 100%;
+    margin: 0;
+  }
+  
+  .main {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    height: 100%;
+    text-align: center;
+  }
+  
+  .icon {
+    color: #2196f3;
+    margin-right: 10px;
+  }
