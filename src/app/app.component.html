@@ -1,3 +1,11 @@
+<!-- Loading Screen Section -->
+<div *ngIf="isLoading" class="loading-screen" [@fadeIn]>
+  <div class="spinner">
+    <mat-icon>hourglass_empty</mat-icon>
+  </div>
+  <p>Loading...</p>
+</div>
+
 <!-- Header Section -->
 <header [@fadeIn]>
   <nav>

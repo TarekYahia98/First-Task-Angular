@@ -6,11 +6,12 @@ import { AddUserComponent } from './add-user/add-user.component';
 import { AboutComponent } from "./about/about.component";
 import { ContactComponent } from "./contact/contact.component";
 import { trigger, transition, style, animate } from '@angular/animations';
+import { CommonModule } from '@angular/common';
 
 @Component({
   selector: 'app-root',
   standalone: true,
-  imports: [RouterOutlet, AddUserComponent, MatToolbarModule, MatIconModule, AboutComponent, ContactComponent],
+  imports: [RouterOutlet, AddUserComponent, MatToolbarModule, MatIconModule, AboutComponent, ContactComponent, CommonModule],
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.css'],
   animations: [
@@ -30,5 +31,12 @@ import { trigger, transition, style, animate } from '@angular/animations';
 })
 export class AppComponent {
   title = 'user-management-app';
+  isLoading: boolean = true;
+
+  ngOnInit() {
+    setTimeout(() => {
+      this.isLoading = false; 
+    }, 2000);
+  }
 }
 
