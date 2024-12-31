@@ -10,24 +10,37 @@ import {MatTableModule} from '@angular/material/table';
 import { MatSortModule } from '@angular/material/sort';
 import { MatInputModule } from '@angular/material/input';
 import { MatTableDataSource } from '@angular/material/table';
+import { IUser } from '../models/user';
+import { MatDialog } from '@angular/material/dialog';
+import { DeleteConfirmationDialogComponent } from '../delete-confirmation-dialog/delete-confirmation-dialog.component';
+import { MatIconModule } from '@angular/material/icon';
 
 
 @Component({
   selector: 'app-user-list',
   standalone: true,
-  imports: [CommonModule,FormsModule, MatPaginator, MatPaginatorModule, MatTableModule, MatSortModule, MatInputModule],
+  imports: [CommonModule,FormsModule, MatPaginator, MatPaginatorModule, MatTableModule, MatSortModule, MatInputModule, MatIconModule],
   templateUrl: './user-list.component.html',
   styleUrls: ['./user-list.component.css']
 })
 export class UserListComponent implements OnInit,OnDestroy {
-  users: User[] = [];
+  jsonApiUsers: User[] = [];
+  backendUsers: IUser[] = [];
   localStorageUsers: User[] = [];
+
   private userSubscription: Subscription | null = null;
   subscription = new Subscription();
   private navigationSubscription: Subscription | null = null;
+
   filteredUsers: User[] = [];
   filteredLocalStorageUsers: User[] = [];
-  dataSource = new MatTableDataSource<User>([]);
+  filteredBackendUsers: User[] = [];
+
+
+  jsonApiDataSource  = new MatTableDataSource<User>([]);
+  localStorageDataSource = new MatTableDataSource<User>();
+  backendDataSource = new MatTableDataSource<IUser>();
+  
   searchTerm: string = '';
 
   // constructor(private userService: UserService, private router: Router, private location: Location) {}
@@ -35,11 +48,14 @@ export class UserListComponent implements OnInit,OnDestroy {
   userService = inject(UserService);
   router = inject(Router);
   location = inject(Location);
+  dialog = inject(MatDialog);
+
 
   @ViewChild(MatPaginator) paginator: MatPaginator | null = null;
   ngOnInit(): void {
     this.fetchUsers();
     this.fetchLocalStorageUsers();
+    this.fetchAllUsers();
 
   const sub1 =  this.navigationSubscription = this.router.events.subscribe(event => {
       if (event instanceof NavigationEnd && event.url === '/users') {
@@ -53,17 +69,36 @@ export class UserListComponent implements OnInit,OnDestroy {
 
   fetchUsers() {
     const userSub = this.userService.getUsers().subscribe((data) => {
-      this.users = data;
-      this.dataSource = new MatTableDataSource(this.users);
+      this.jsonApiUsers = data;
+      this.jsonApiDataSource = new MatTableDataSource(this.jsonApiUsers);
       if (this.paginator) {
-        this.dataSource.paginator = this.paginator;
+        this.jsonApiDataSource.paginator = this.paginator;
       }
     });
     this.subscription.add(userSub);
   }
 
-  filterUsers() {
-    this.dataSource.filter = this.searchTerm.trim().toLowerCase();
+  fetchAllUsers() {
+    const userSub2 = this.userService.getAllUsers().subscribe((data: IUser[]) => {
+        this.backendUsers = data;
+        this.backendDataSource = new MatTableDataSource(this.backendUsers);
+        if (this.paginator) {
+            this.backendDataSource.paginator = this.paginator;
+        }
+    });
+    this.subscription.add(userSub2);
+}
+
+
+  // filterUsers() {
+  //   this.jsonApiDataSource.filter = this.searchTerm.trim().toLowerCase();
+  //   if (this.paginator) {
+  //     this.paginator.firstPage();
+  //   }
+  // }
+
+  filterAllUsers() {
+    this.backendDataSource.filter = this.searchTerm.trim().toLowerCase();
     if (this.paginator) {
       this.paginator.firstPage();
     }
@@ -73,11 +108,15 @@ export class UserListComponent implements OnInit,OnDestroy {
     const storedUsers = JSON.parse(localStorage.getItem('users') || '[]');
     this.localStorageUsers = storedUsers;
     this.filteredLocalStorageUsers = [...this.localStorageUsers];
+    if (this.paginator) {
+      this.paginator.firstPage();
+    }
   }
 
   viewUserDetails(userId: number) {
     this.router.navigate(['/user', userId]);
   }
+  
 
   navigateToAddUser() {
     this.location.go('add-user');
@@ -106,13 +145,54 @@ export class UserListComponent implements OnInit,OnDestroy {
     }
   }
 
+  filterUsers(): void {
+    const filterValue = this.searchTerm.trim().toLowerCase();
+    this.jsonApiDataSource.filter = filterValue;
+    this.backendDataSource.filter = filterValue;
+    this.localStorageDataSource.filter = filterValue;
+    if (this.paginator) {
+      this.paginator.firstPage();
+    }
+  }
+
   ngAfterViewInit() {
     if (this.paginator) {
-      this.dataSource.paginator = this.paginator;
+      this.jsonApiDataSource.paginator = this.paginator;
       this.paginator._intl.itemsPerPageLabel = 'Users per page';
     }
   }
 
+  openDeleteDialog(userId: number): void {
+    const dialogRef = this.dialog.open(DeleteConfirmationDialogComponent, {
+      width: '500px',
+      data: { userId },
+    });
+
+    dialogRef.afterClosed().subscribe((result) => {
+      if (result) {
+        this.deleteUser(userId);
+      }
+    });
+  }
+
+  deleteUser(userId: number): void {
+    const userSub3 = this.userService.deleteUser(userId).subscribe(
+      () => {
+        this.fetchUsers();
+        this.fetchLocalStorageUsers();
+        this.fetchAllUsers();
+        
+        this.router.navigate(['/users']);
+      },
+      (error) => {
+        console.error('Error deleting user:', error);
+      }
+    );
+    this.subscription.add(userSub3);
+
+  }
+  
+  
   ngOnDestroy(): void {
     // if (this.userSubscription) {
     //   this.userSubscription.unsubscribe();
@@ -124,3 +204,5 @@ export class UserListComponent implements OnInit,OnDestroy {
     this.subscription.unsubscribe();
   }
 }
+
+

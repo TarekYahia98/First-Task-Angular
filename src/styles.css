@@ -1,7 +1,8 @@
 @import 'bootstrap/dist/css/bootstrap.min.css';
-@tailwind base;
+@import '@angular/material/prebuilt-themes/indigo-pink.css';
+/* @tailwind base;
 @tailwind components;
-@tailwind utilities;
+@tailwind utilities; */
 
 html, body { height: 100%; }
 body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
@@ -55,4 +56,6 @@ header {
     --gray-900: #212121;
     --gray-700: #616161;
   }
+
+  
   

@@ -4,6 +4,7 @@ import { User } from '../models/user.model';
 import { CommonModule } from '@angular/common';
 import { UserService } from '../../services/user.service';
 import { Location } from '@angular/common';
+import { IUser } from '../models/user';
 
 @Component({
   selector: 'app-user-details',
@@ -14,6 +15,8 @@ import { Location } from '@angular/common';
 })
 export class UserDetailsComponent implements OnInit {
   user: User | null = null;
+  userDetails: IUser | null = null;
+  
 
   // constructor(
   //   private userService: UserService,
@@ -27,16 +30,24 @@ route = inject(ActivatedRoute);
 router = inject(Router);
 location = inject(Location);
 
+
   ngOnInit(): void {
     const userId = Number(this.route.snapshot.paramMap.get('id'));
     if (userId) {
-      this.fetchUserDetails(userId);
+       this.fetchUserDetails(userId);
+       this.fetchUserDetailsFromBackend(userId);
     }
   }
 
   fetchUserDetails(userId: number) {
-    this.userService.getUserById(userId).subscribe(data => {
+    this.userService.getUserById(userId).subscribe((data: User) => {
       this.user = data;
+    });
+  }
+
+  fetchUserDetailsFromBackend(userId: number) {
+    this.userService.getUserDetailsById(userId).subscribe((data: IUser) => {
+      this.userDetails = data;
     });
   }
 

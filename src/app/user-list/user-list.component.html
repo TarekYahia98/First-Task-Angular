@@ -8,8 +8,8 @@
   />
 </div>
 
-<h2>USERS FROM BACKEND API</h2>
-<table mat-table [dataSource]="dataSource" class="mat-elevation-z8">
+<h2>USERS FROM JSON API</h2>
+<table mat-table [dataSource]="jsonApiDataSource" class="mat-elevation-z8">
   <ng-container matColumnDef="id">
     <th mat-header-cell *matHeaderCellDef>ID</th>
     <td mat-cell *matCellDef="let user">{{ user.id }}</td>
@@ -47,6 +47,50 @@
     <button class="btn btn-success" (click)="navigateToAddUser()">Add User</button>
   </div>
   
+  <h2>USERS FROM BACKEND API</h2>
+  <table mat-table [dataSource]="backendDataSource" class="mat-elevation-z8">
+    <ng-container matColumnDef="id">
+      <th mat-header-cell *matHeaderCellDef>ID</th>
+      <td mat-cell *matCellDef="let user">{{ user.id }}</td>
+    </ng-container>
+  
+    <ng-container matColumnDef="name">
+      <th mat-header-cell *matHeaderCellDef>Name</th>
+      <td mat-cell *matCellDef="let user">{{ user.name }}</td>
+    </ng-container>
+  
+    <ng-container matColumnDef="email">
+      <th mat-header-cell *matHeaderCellDef>Email</th>
+      <td mat-cell *matCellDef="let user">{{ user.email }}</td>
+    </ng-container>
+  
+    <ng-container matColumnDef="actions">
+      <th mat-header-cell *matHeaderCellDef>Actions</th>
+      <td mat-cell *matCellDef="let user">
+        <div class="button-container">
+          <button class="btn btn-primary" (click)="viewUserDetails(user.id)">
+            View Details
+          </button>
+          <button mat-icon-button (click)="openDeleteDialog(user.id)">
+            <mat-icon>delete</mat-icon>
+          </button>
+        </div>
+      </td>
+    </ng-container>
+  
+    <tr mat-header-row *matHeaderRowDef="['id', 'name', 'email', 'actions']"></tr>
+    <tr mat-row *matRowDef="let row; columns: ['id', 'name', 'email', 'actions']"></tr>
+  </table>
+  
+  <mat-paginator
+    [pageSizeOptions]="[5, 10, 20]"
+    showFirstLastButtons
+  ></mat-paginator>
+  
+    <div class="add-user-button-container">
+      <button class="btn btn-success" (click)="navigateToAddUser()">Add User</button>
+    </div>
+
   <h2>USERS FROM LOCAL STORAGE</h2>
 <table class="table table-striped">
   <thead>
@@ -65,8 +109,7 @@
       <td>{{ user.age }}</td>
       <td>{{ user.salary }}</td>
       <td>{{ user.address }}</td>
-
     </tr>
-  </tbody>
 </table>
+
 
