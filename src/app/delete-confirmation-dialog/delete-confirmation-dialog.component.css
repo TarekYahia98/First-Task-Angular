@@ -1,3 +1,88 @@
-
+.mat-dialog-container {
+    background-color: #fff;
+    border: 2px solid #e53935;
+    border-radius: 8px;
+    padding: 20px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+    max-width: 400px;
+    animation: fadeInDialog 0.3s ease-in-out;
+  }
   
+  h1.mat-dialog-title {
+    color: #e53935;
+    font-size: 24px;
+    text-align: center;
+    font-weight: bold;
+    margin-bottom: 20px;
+    text-transform: uppercase;
+  }
+  
+  .mat-dialog-content {
+    font-size: 16px;
+    color: #333;
+    text-align: center;
+    padding: 30px;
+    background: #f8f8f8;
+    border-radius: 6px;
+    box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
+  }
+  
+  .mat-dialog-actions {
+    display: flex;
+    justify-content: space-between;
+    padding: 15px;
+    background: #fafafa;
+    border-top: 1px solid #e0e0e0;
+    border-radius: 0px 0px 8px 8px;
+  }
+  
+  .mat-button {
+    font-size: 16px;
+    padding: 10px 20px;
+    border-radius: 4px;
+    transition: all 0.3s ease;
+    border: 1px solid transparent;
+  }
+  
+  .mat-button:focus {
+    outline: none;
+    box-shadow: 0 0 0 2px #e53935;
+  }
+  
+  .mat-button:not(.mat-accent) {
+    background-color: #f2f2f2;
+    color: #444;
+  }
+  
+  .mat-button:not(.mat-accent):hover {
+    background-color: #e0e0e0;
+  }
+  
+  .mat-button.mat-accent {
+    background-color: #e53935;
+    color: white;
+    border: 1px solid #e53935;
+    font-weight: bold;
+  }
+  
+  .mat-button.mat-accent:hover {
+    background-color: #d32f2f;
+    border: 1px solid #d32f2f;
+  }
+  
+  .mat-button:hover {
+    transform: scale(1.05);
+    transition: transform 0.2s ease-in-out;
+  }
+  
+  @keyframes fadeInDialog {
+    from {
+      opacity: 0;
+      transform: translateY(-50px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
   

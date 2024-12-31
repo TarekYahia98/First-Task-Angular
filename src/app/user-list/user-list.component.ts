@@ -14,6 +14,9 @@ import { IUser } from '../models/user';
 import { MatDialog } from '@angular/material/dialog';
 import { DeleteConfirmationDialogComponent } from '../delete-confirmation-dialog/delete-confirmation-dialog.component';
 import { MatIconModule } from '@angular/material/icon';
+import { EditUserDialogComponent } from '../edit-user-dialog/edit-user-dialog.component';
+import { MatSnackBar } from '@angular/material/snack-bar';
+
 
 
 @Component({
@@ -49,6 +52,8 @@ export class UserListComponent implements OnInit,OnDestroy {
   router = inject(Router);
   location = inject(Location);
   dialog = inject(MatDialog);
+  snackBar = inject(MatSnackBar);
+
 
 
   @ViewChild(MatPaginator) paginator: MatPaginator | null = null;
@@ -174,6 +179,37 @@ export class UserListComponent implements OnInit,OnDestroy {
       }
     });
   }
+
+  openEditDialog(user: IUser): void {
+    const dialogRef = this.dialog.open(EditUserDialogComponent, {
+      width: '500px',
+      data: user,
+    });
+  
+    dialogRef.afterClosed().subscribe((result) => {
+      if (result) {
+        this.updateUser(user.id, result);
+      }
+    });
+  }
+
+  updateUser(id: number, userDetails: IUser): void {
+    this.userService.updateUser(id, userDetails).subscribe({
+      next: (updatedUser) => {
+        this.refreshTable();
+        this.snackBar.open('User updated successfully!', 'Close', { duration: 3000 });
+      },
+      error: (err) => {
+        console.error('Error updating user:', err);
+        this.snackBar.open('Failed to update user.', 'Close', { duration: 3000 });
+      },
+    });
+  }
+  
+  refreshTable(): void {
+    this.fetchAllUsers();
+  }
+  
 
   deleteUser(userId: number): void {
     const userSub3 = this.userService.deleteUser(userId).subscribe(
