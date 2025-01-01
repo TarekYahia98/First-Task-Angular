@@ -17,6 +17,7 @@ import { MatIconModule } from '@angular/material/icon';
 import { EditUserDialogComponent } from '../edit-user-dialog/edit-user-dialog.component';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { AddNewUserComponent } from '../add-new-user/add-new-user.component';
+import { BackendUserDetailsComponent } from '../backend-user-details/backend-user-details.component';
 
 
 
@@ -122,7 +123,18 @@ export class UserListComponent implements OnInit,OnDestroy {
   viewUserDetails(userId: number) {
     this.router.navigate(['/user', userId]);
   }
+
+  openViewDialog(user: IUser): void {
+    const dialogRef = this.dialog.open(BackendUserDetailsComponent, {
+      width: '500px',
+      data: user,
+    });
   
+    dialogRef.afterClosed().subscribe(result => {
+      console.log('Dialog was closed');
+    });
+  }
+
 
   navigateToAddUser() {
     this.location.go('add-user');

@@ -1,0 +1,20 @@
+<div *ngIf="userDetails">
+    <h2>User Details</h2>
+    <p><strong>Name:</strong> {{ userDetails.name }}</p>
+    <p><strong>Username:</strong> {{ userDetails.username }}</p>
+    <p><strong>Email:</strong> {{ userDetails.email }}</p>
+    <p><strong>Address:</strong> {{ userDetails.addressStreet }}, {{ userDetails.addressCity }}</p>
+    <p><strong>Phone:</strong> {{ userDetails.phone }}</p>
+    <p><strong>Company:</strong> {{ userDetails.companyName }}</p>
+    <p><strong>Salary:</strong> {{ userDetails.salary }}</p>
+    <p><strong>Age:</strong> {{ userDetails.age }}</p>
+    <p><strong>Website:</strong> {{ userDetails.website }}</p>
+  
+    <button (click)="closeDialog()">Close</button>
+  </div>
+  
+  <div *ngIf="!userDetails">
+    <p>Loading user details...</p>
+  </div>
+  
+  
