@@ -43,9 +43,10 @@
   showFirstLastButtons
 ></mat-paginator>
 
-  <div class="add-user-button-container">
-    <button class="btn btn-success" (click)="navigateToAddUser()">Add User</button>
-  </div>
+<div class="add-user-button-container">
+  <button class="btn btn-success" (click)="openAddUserDialog()">Add User</button>
+</div>
+
   
   <h2>USERS FROM BACKEND API</h2>
   <table mat-table [dataSource]="backendDataSource" class="mat-elevation-z8">

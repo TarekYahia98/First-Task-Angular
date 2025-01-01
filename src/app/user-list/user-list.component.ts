@@ -16,6 +16,7 @@ import { DeleteConfirmationDialogComponent } from '../delete-confirmation-dialog
 import { MatIconModule } from '@angular/material/icon';
 import { EditUserDialogComponent } from '../edit-user-dialog/edit-user-dialog.component';
 import { MatSnackBar } from '@angular/material/snack-bar';
+import { AddNewUserComponent } from '../add-new-user/add-new-user.component';
 
 
 
@@ -187,11 +188,27 @@ export class UserListComponent implements OnInit,OnDestroy {
     });
   
     dialogRef.afterClosed().subscribe((result) => {
-      if (result) {
+      if (result && user.id !== undefined) {
         this.updateUser(user.id, result);
+      } else {
+        console.error('User ID is missing or invalid');
       }
     });
   }
+  
+
+  openAddUserDialog(): void {
+    const dialogRef = this.dialog.open(AddNewUserComponent, {
+      width: '600px',
+    });
+  
+    dialogRef.afterClosed().subscribe((result) => {
+      if (result === 'userAdded') {
+        this.refreshTable();
+      }
+    });
+  }
+  
 
   updateUser(id: number, userDetails: IUser): void {
     this.userService.updateUser(id, userDetails).subscribe({

@@ -1,0 +1,83 @@
+<div class="form-container">
+    <button class="close-btn" (click)="closeForm()">X</button>
+    <h2>Add New User</h2>
+    <form (ngSubmit)="saveBackendUser()">
+      <div class="form-group">
+        <label for="name">Name</label>
+        <input type="text" id="name" class="form-control" [(ngModel)]="newUser.name" name="name" required />
+      </div>
+  
+      <div class="form-group">
+        <label for="username">User Name</label>
+        <input type="text" id="username" class="form-control" [(ngModel)]="newUser.username" name="username" required />
+      </div>
+  
+      <div class="form-group">
+        <label for="email">Email</label>
+        <input type="email" id="email" class="form-control" [(ngModel)]="newUser.email" name="email" required />
+      </div>
+  
+      <div class="form-group">
+        <label for="addressStreet">Street</label>
+        <input type="text" id="addressStreet" class="form-control" [(ngModel)]="newUser.addressStreet" name="addressStreet" />
+      </div>
+      <div class="form-group">
+        <label for="addressSuite">Suite</label>
+        <input type="text" id="addressSuite" class="form-control" [(ngModel)]="newUser.addressSuite" name="addressSuite" />
+      </div>
+      <div class="form-group">
+        <label for="addressCity">City</label>
+        <input type="text" id="addressCity" class="form-control" [(ngModel)]="newUser.addressCity" name="addressCity" />
+      </div>
+      <div class="form-group">
+        <label for="addressZipcode">Zip Code</label>
+        <input type="text" id="addressZipcode" class="form-control" [(ngModel)]="newUser.addressZipcode" name="addressZipcode" />
+      </div>
+      <div class="form-group">
+        <label for="addressGeoLat">Address Latitude</label>
+        <input type="text" id="addressGeoLat" class="form-control" [(ngModel)]="newUser.addressGeoLat" name="addressGeoLat" />
+      </div>
+      <div class="form-group">
+        <label for="addressGeoLng">Address Longitude</label>
+        <input type="text" id="addressGeoLng" class="form-control" [(ngModel)]="newUser.addressGeoLng" name="addressGeoLng" />
+      </div>
+  
+      <div class="form-group">
+        <label for="phone">Phone Number</label>
+        <input type="text" id="phone" class="form-control" [(ngModel)]="newUser.phone" name="phone" />
+      </div>
+      <div class="form-group">
+        <label for="website">Website</label>
+        <input type="text" id="website" class="form-control" [(ngModel)]="newUser.website" name="website" />
+      </div>
+  
+      <div class="form-group">
+        <label for="companyName">Company Name</label>
+        <input type="text" id="companyName" class="form-control" [(ngModel)]="newUser.companyName" name="companyName" />
+      </div>
+      <div class="form-group">
+        <label for="companyCatchPhrase">Company Catch Phrase</label>
+        <input type="text" id="companyCatchPhrase" class="form-control" [(ngModel)]="newUser.companyCatchPhrase" name="companyCatchPhrase" />
+      </div>
+      <div class="form-group">
+        <label for="companyBs">Company Business</label>
+        <input type="text" id="companyBs" class="form-control" [(ngModel)]="newUser.companyBs" name="companyBs" />
+      </div>
+  
+      <div class="form-group">
+        <label for="age">Age</label>
+        <input type="number" id="age" class="form-control" [(ngModel)]="newUser.age" name="age" />
+      </div>
+      <div class="form-group">
+        <label for="salary">Salary</label>
+        <input type="number" id="salary" class="form-control" [(ngModel)]="newUser.salary" name="salary" />
+      </div>
+  
+      <button type="submit" class="btn btn-success" [disabled]="isFormInvalid()">Save User</button>
+    </form>
+  
+    <div class="popup" [ngClass]="popupColor" [@fadeInOut]="popupState">
+      {{ popupMessage }}
+    </div>
+  </div>
+  
